@@ -14,6 +14,10 @@
     "sysproxy.js",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "dependencies": {
     "ini": "^4.1.2",
     "net-proxied": "1.0.1",
