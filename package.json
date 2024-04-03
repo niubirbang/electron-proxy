@@ -1,12 +1,12 @@
 {
-  "name": "@niubir/electron-proxy",
-  "version": "1.1.3",
+  "name": "@niubirbang/electron-proxy",
+  "version": "1.0.0",
   "description": "This electron proxy util",
   "keywords": [
     "electron",
     "electron-proxy"
   ],
-  "author": "niubir",
+  "author": "niubirbang",
   "license": "ISC",
   "main": "index.js",
   "files": [
