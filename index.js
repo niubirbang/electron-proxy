@@ -160,7 +160,7 @@ const configNodes = ({
   nodes = [],
   groups = [],
   userAllowIDs = [],
-  afterDo = () => {},
+  afterDo = () => { },
 }) => {
   return new Promise(async (resolve, reject) => {
     let groupIDNodes = {}
@@ -190,7 +190,7 @@ const configNodes = ({
       } else {
         node.allow = true
       }
-  
+
       for (let groupID of node.groupIDs) {
         let groupNodes = groupIDNodes[groupID]
         if (!groupNodes) {
@@ -212,7 +212,7 @@ const configNodes = ({
       }
       groups[i] = group
     }
-    
+
     engine.nodes = nodes || []
     engine.groups = groups || []
     engine.userAllowIDs = userAllowIDs || []
@@ -505,7 +505,7 @@ const run_test_delay = () => {
     clearInterval(delayFresher)
   }
   test_delaies()
-  delayFresher = setInterval(()=>{
+  delayFresher = setInterval(() => {
     test_delaies()
   }, 30000)
 }
@@ -514,7 +514,7 @@ const test_delaies = () => {
     if (engine.delaies[node.id]) {
       continue
     }
-    test_delay(node).then(delay=>{
+    test_delay(node).then(delay => {
       engine.delaies[node.id] = delay
     })
   }

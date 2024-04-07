@@ -48,7 +48,7 @@ const winOpenProxy = (server, port, passProxies) => {
     proxyConfig.types = ['http', 'https', 'ftp', 'socks']
     proxyConfig.override = passProxies
     WindowsProxied.enable(proxyConfig)
-  } catch(err) {
+  } catch (err) {
     console.warn('open windows proxy failed', err)
   }
 }
@@ -56,7 +56,7 @@ const winOpenProxy = (server, port, passProxies) => {
 const winCloseProxy = () => {
   try {
     WindowsProxied.disable()
-  } catch(err) {
+  } catch (err) {
     console.warn('close windows proxy failed', err)
   }
 }
@@ -65,14 +65,14 @@ const darwinOpenProxy = (server, port, passProxies) => {
   for (let name of darwinNetworkServiceNames()) {
     try {
       let config = new MacProxyConfig()
-      config.networkServiceNames = ['\''+name+'\'']
+      config.networkServiceNames = ['\'' + name + '\'']
       config.hostname = server
       config.port = port
       config.types = ['web', 'secureweb']
       config.passDomains = passProxies
       MacProxied.enable(config)
-    } catch(err) {
-      console.warn('open darwin('+name+') proxy failed', err)
+    } catch (err) {
+      console.warn('open darwin(' + name + ') proxy failed', err)
     }
   }
 }
@@ -81,11 +81,11 @@ const darwinCloseProxy = () => {
   for (let name of darwinNetworkServiceNames()) {
     try {
       MacProxied.disable({
-        networkServiceNames: ['\''+name+'\''],
+        networkServiceNames: ['\'' + name + '\''],
         types: ['web', 'secureweb'],
       })
-    }catch(err) {
-      console.warn('close darwin('+name+') proxy failed', err)
+    } catch (err) {
+      console.warn('close darwin(' + name + ') proxy failed', err)
     }
   }
 }
