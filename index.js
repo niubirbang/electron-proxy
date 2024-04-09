@@ -28,6 +28,7 @@ let engine = {
   mode: default_mode,
 
   nodeCompareFunc: null,
+  startBeforeInterceptor: null,
 
   nodes: [],
   groups: [],
@@ -160,6 +161,7 @@ const configNodes = ({
   groups = [],
   userAllowIDs = [],
   afterDo = () => { },
+  startBeforeInterceptor = () => { },
 }) => {
   return new Promise(async (resolve, reject) => {
     let groupIDNodes = {}
@@ -218,6 +220,7 @@ const configNodes = ({
     engine.nodes = nodes || []
     engine.groups = groups || []
     engine.userAllowIDs = userAllowIDs || []
+    engine.startBeforeInterceptor = startBeforeInterceptor
     engine.loaded = true
 
     if (afterDo && typeof afterDo == 'function') {
@@ -320,6 +323,15 @@ const start = () => {
     if (!engine.currentNode) {
       try {
         await set_current(null, null)
+      } catch (err) {
+        reject(err)
+        return
+      }
+    }
+
+    if (engine.startBeforeInterceptor && typeof engine.startBeforeInterceptor == 'function') {
+      try {
+        await engine.startBeforeInterceptor()
       } catch (err) {
         reject(err)
         return
