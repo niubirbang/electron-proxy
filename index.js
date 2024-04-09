@@ -18,6 +18,7 @@ let xfuture_config = {
   tun_config_path: '',
   resource_path: '',
 }
+let start_before_interceptor = null
 
 let engine = {
   loaded: false,
@@ -28,7 +29,6 @@ let engine = {
   mode: default_mode,
 
   nodeCompareFunc: null,
-  startBeforeInterceptor: null,
 
   nodes: [],
   groups: [],
@@ -220,7 +220,6 @@ const configNodes = ({
     engine.nodes = nodes || []
     engine.groups = groups || []
     engine.userAllowIDs = userAllowIDs || []
-    engine.startBeforeInterceptor = startBeforeInterceptor
     engine.loaded = true
 
     if (afterDo && typeof afterDo == 'function') {
@@ -230,6 +229,8 @@ const configNodes = ({
         console.warn('config nodes after do failed:', err)
       }
     }
+
+    start_before_interceptor = startBeforeInterceptor
 
     sync_engine()
     resolve()
@@ -329,9 +330,9 @@ const start = () => {
       }
     }
 
-    if (engine.startBeforeInterceptor && typeof engine.startBeforeInterceptor == 'function') {
+    if (start_before_interceptor && typeof start_before_interceptor == 'function') {
       try {
-        await engine.startBeforeInterceptor()
+        await start_before_interceptor()
       } catch (err) {
         reject(err)
         return
