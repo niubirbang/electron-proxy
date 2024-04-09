@@ -1,6 +1,6 @@
 {
   "name": "@niubirbang/electron-proxy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This electron proxy util",
   "keywords": [
     "electron",

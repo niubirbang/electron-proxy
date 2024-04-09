@@ -51,6 +51,23 @@ const init_engine = () => {
   run_test_delay()
 }
 
+const install = (path, password) => {
+  xfuture_config = {
+    password: password,
+    install_shell_path: get_xfuture_install_shell_path(path),
+    install_helper_path: get_xfuture_install_helper_path(path),
+    tun_config_path: get_xfuture_tun_config_path(path),
+    resource_path: get_xfuture_resource_path(path),
+  }
+
+  try {
+    xEngine.InstallDriver(xfuture_config.install_shell_path, xfuture_config.install_helper_path)
+    xEngine.SetPassword(xfuture_config.password)
+  } catch (err) {
+    console.error('install failed:', err)
+  }
+}
+
 const init = ({
   iniFilePath = './proxy.ini',
   defaultType = 'proxy',
@@ -59,23 +76,12 @@ const init = ({
     console.log('sync proxy:', engine)
   },
   nodeCompareFunc = null,
-  xfutureConfig = {
-    path: '',
-    password: '',
-  },
 }) => {
   return new Promise(async (resolve, reject) => {
     ini_file_path = iniFilePath
     default_type = defaultType
     default_mode = defaultMode
     sync_func = syncFunc
-    xfuture_config = {
-      password: xfutureConfig.password,
-      install_shell_path: get_xfuture_install_shell_path(xfutureConfig.path),
-      install_helper_path: get_xfuture_install_helper_path(xfutureConfig.path),
-      tun_config_path: get_xfuture_tun_config_path(xfutureConfig.path),
-      resource_path: get_xfuture_resource_path(xfutureConfig.path),
-    }
 
     engine.type = get_type()
     engine.mode = get_mode()
@@ -83,14 +89,6 @@ const init = ({
     engine.nodeCompareFunc = nodeCompareFunc
 
     init_engine()
-
-    try {
-      xEngine.InstallDriver(xfuture_config.install_shell_path, xfuture_config.install_helper_path)
-      xEngine.SetPassword(xfuture_config.password)
-    } catch (err) {
-      reject(err)
-      return
-    }
 
     try {
       xEngine.StopProxy()
@@ -572,6 +570,7 @@ const nodeCompareByDelayFunc = () => {
 }
 
 module.exports = {
+  install,
   init,
   quit,
   reload,
