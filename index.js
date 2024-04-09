@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const tcpping = require('tcp-ping')
+const { v4: uuidv4 } = require('uuid')
 const xParser = require('xfuture/parser')
 const xEngine = require('xfuture/index')
 const ini = require('ini')
@@ -200,6 +201,9 @@ const configNodes = ({
     }
     for (let i in groups) {
       let group = groups[i]
+      if (!group.id) {
+        group.id = uuidv4()
+      }
       group.nodes = groupIDNodes[group.id] || []
       group.allow = false
       for (let node of group.nodes) {
