@@ -11,6 +11,8 @@ let ini_file_path = './proxy.ini'
 let default_type = 'proxy'
 let default_mode = 'rule'
 let sync_func = null
+let node_compare_func = null
+let node_delay_machine_func = null
 let xfuture_config = {
   password: '',
   install_shell_path: '',
@@ -27,8 +29,6 @@ let engine = {
 
   type: default_type,
   mode: default_mode,
-
-  nodeCompareFunc: null,
 
   nodes: [],
   groups: [],
@@ -78,17 +78,19 @@ const init = ({
     console.log('sync proxy:', engine)
   },
   nodeCompareFunc = null,
+  nodeDelayMachineFunc = null,
 }) => {
   return new Promise(async (resolve, reject) => {
     ini_file_path = iniFilePath
     default_type = defaultType
     default_mode = defaultMode
     sync_func = syncFunc
+    node_compare_func = nodeCompareFunc
+    node_delay_machine_func = nodeDelayMachineFunc
 
     engine.type = get_type()
     engine.mode = get_mode()
 
-    engine.nodeCompareFunc = nodeCompareFunc
 
     init_engine()
 
@@ -147,14 +149,14 @@ const get = () => {
 }
 
 const nodeDelay = (id) => {
-  return engine.delaies[id]
+  return get_node_delay(id)
 }
 
 const nodesMinDelay = (ids) => {
   let min_delay = null
   for (let id of ids) {
-    let delay = engine.delaies[id]
-    if (delay && delay < min_delay) {
+    let delay = get_node_delay(id)
+    if (delay && (!min_delay || min_delay > delay)) {
       min_delay = delay
     }
   }
@@ -429,9 +431,9 @@ const set_current = (groupID, nodeID) => {
       reject('no_allow_node')
       return
     }
-    if (engine.nodeCompareFunc && typeof engine.nodeCompareFunc == 'function') {
+    if (node_compare_func && typeof node_compare_func == 'function') {
       usebleNodes.sort((a, b) => {
-        return engine.nodeCompareFunc(a, b)
+        return node_compare_func(a, b)
       })
     }
 
@@ -585,6 +587,16 @@ const parse_delay = (data) => {
     }
   }
   return null
+}
+const get_node_delay = (id) => {
+  let delay = engine.delaies[id]
+  if (!delay) {
+    return delay
+  }
+  if (!node_delay_machine_func) {
+    return delay
+  }
+  return node_delay_machine_func(engine.nodes.find(node => node.id === id), delay)
 }
 
 const nodeCompareByDelayFunc = () => {
