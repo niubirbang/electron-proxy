@@ -590,9 +590,6 @@ const parse_delay = (data) => {
 }
 const get_node_delay = (id) => {
   let delay = engine.delaies[id]
-  if (!delay) {
-    return delay
-  }
   if (!node_delay_machine_func) {
     return delay
   }
