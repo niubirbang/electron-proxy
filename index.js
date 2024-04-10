@@ -146,6 +146,21 @@ const get = () => {
   return engine
 }
 
+const nodeDelay = (id) => {
+  return engine.delaies[id]
+}
+
+const nodesMinDelay = (ids) => {
+  let min_delay = null
+  for (let id of ids) {
+    let delay = engine.delaies[id]
+    if (delay && delay < min_delay) {
+      min_delay = delay
+    }
+  }
+  return min_delay
+}
+
 /*
 node struct:
 {
@@ -592,6 +607,8 @@ module.exports = {
   quit,
   reload,
   get,
+  nodeDelay,
+  nodesMinDelay,
   configNodes,
   changeType,
   changeMode,
