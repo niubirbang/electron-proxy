@@ -239,6 +239,8 @@ const configNodes = ({
     engine.userAllowIDs = userAllowIDs || []
     engine.loaded = true
 
+    run_test_delay()
+
     if (afterDo && typeof afterDo == 'function') {
       try {
         await afterDo(engine)
