@@ -598,17 +598,15 @@ const get_node_delay = (id) => {
   return node_delay_machine_func(engine.nodes.find(node => node.id === id), delay)
 }
 
-const nodeCompareByDelayFunc = () => {
-  return (a, b) => {
-    const a_delay = engine.delaies[a.id] || 0
-    const b_delay = engine.delaies[b.id] || 0
-    const a_score = a_delay * 100
-    const b_score = b_delay * 100
-    if (a_score != b_score) {
-      return a_score - b_score
-    } else {
-      return 0
-    }
+const nodeCompareByDelayFunc = (a, b) => {
+  const a_delay = engine.delaies[a.id] || 0
+  const b_delay = engine.delaies[b.id] || 0
+  const a_score = a_delay * 100
+  const b_score = b_delay * 100
+  if (a_score != b_score) {
+    return a_score - b_score
+  } else {
+    return 0
   }
 }
 
